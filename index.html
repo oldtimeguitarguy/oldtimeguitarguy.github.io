@@ -1,0 +1,124 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en-US"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Karl Hepler</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+        <style type="text/css">
+            a {
+                display: block;
+                text-align: center;
+                font-size: calc(100vw / 10);
+                transform: translateY(50vh);
+                margin-top: -1em;
+                cursor: pointer;
+                text-decoration: none;
+                transition: opacity 0.2s ease;
+                line-height: 2em;
+            }
+            a:hover > span {
+                opacity: 0.75;
+            }
+            a > span {
+                display: inline-block;
+                transition: all 0.2s ease;
+                vertical-align: middle;
+                margin: 0 calc(1em / 10);
+            }
+            a > span:hover {
+                opacity: 1;
+                font-size: 2em;
+                margin: 0 calc(-0.5em / 10);
+            }
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <main></main>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.runtime.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+        <script type="text/javascript">
+            'use strict';
+            (function (Vue, axios, document, Math, undefined) {
+                new Vue({
+                    el: 'main',
+                    data: function data() {
+                        return {
+                            name: 'KARL HEPLER',
+                            fonts: [],
+                            animations: ['bounce', 'rubberBand', 'shake', 'headShake', 'swing', 'tada', 'wobble', 'jello', 'bounceIn', 'bounceInDown', 'bounceInLeft', 'bounceInRight', 'bounceInUp', 'flipInX', 'flipInY', 'lightSpeedIn', 'rotateIn', 'rotateInDownLeft', 'rotateInDownRight', 'rotateInUpLeft', 'rotateInUpRight', 'jackInTheBox', 'rollIn', 'zoomIn', 'zoomInDown', 'zoomInLeft', 'zoomInRight', 'zoomInUp', 'slideInDown', 'slideInLeft', 'slideInRight', 'slideInUp']
+                        };
+                    },
+                    created: function onCreated() {
+                        document.getElementsByTagName('body')[0].style.backgroundColor = 'rgb('+rand(0,99)+','+rand(0,99)+','+rand(0,99)+')'
+                        axios.get('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyDTcLQ4t90XjaXuy0PSADO0c6v99tN3Z3Y')
+                        .then(function onSuccess(response) {
+                            for (var i = 0; i < this.name.length; i++) {
+                                var fontFamily = response.data.items[rand(0, response.data.items.length - 1)].family;
+                                this.fonts.push(fontFamily);
+                                loadcss('https://fonts.googleapis.com/css?family='+fontFamily.replace(/\s+/g, '%20'));
+                            }
+                        }.bind(this));
+                    },
+                    render: function onRender(createElement) {
+                        return createElement('a',
+                            {
+                                attrs: {
+                                    href: 'https://github.com/oldtimeguitarguy',
+                                    title: 'KARL HEPLER / OLD TIME GUITAR GUY'
+                                }
+                            },
+                            this.name.split('').map(function eachLetter(letter, index) {
+                                var span = {
+                                    class: { animated: true },
+                                    domProps: { innerHTML: letter },
+                                    style: {
+                                        color: 'rgb('+rand(100,255)+','+rand(100,255)+','+rand(100,255)+')',
+                                        fontFamily: this.fonts[index],
+                                        textTransform: rand(1,2) === 1 ? 'uppercase' : 'lowercase',
+                                        fontWeight: rand(1,2) === 1 ? 'bold' : 'normal',
+                                        textDecoration: (function () {
+                                            switch (rand(1, 4)) {
+                                                case 1: return 'underline';
+                                                case 2: return 'overline';
+                                                case 3: return 'line-through';
+                                                case 4: return 'none';
+                                            }
+                                        })(),
+                                        transform: 'rotateY('+(rand(1,2) === 1 ? 0 : 180)+'deg) rotateZ('+rand(0,359)+'deg)'
+                                    }
+                                };
+                                span.animation = span.class[this.animations[rand(0, this.animations.length)]] = true;
+                                return createElement('span', span);
+                            }.bind(this)));
+                    }
+                });
+
+                function rand(min, max) {
+                    return Math.floor(Math.random() * (min + max)) + min;
+                }
+
+                function loadcss(url) {
+                    var head = document.getElementsByTagName('head')[0],
+                        link = document.createElement('link');
+                    link.type = 'text/css';
+                    link.rel = 'stylesheet';
+                    link.href = url;
+                    head.appendChild(link);
+                    return link;
+                }
+            })(window.Vue, window.axios, window.document, window.Math);
+        </script>
+    </body>
+</html>
